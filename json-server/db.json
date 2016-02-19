@@ -6,7 +6,7 @@
       "image": "images/uthapizza.png",
       "category": "mains",
       "label": "Hot",
-      "price": "4.99",
+      "price": 4.99,
       "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
       "comments": [
         {
@@ -38,6 +38,30 @@
           "comment": "It's your birthday, we're gonna party!",
           "author": "25 Cent",
           "date": "2011-12-02T17:57:28.556094Z"
+        },
+        {
+          "rating": 5,
+          "comment": "",
+          "author": "",
+          "date": "2016-02-19T16:47:59.941Z"
+        },
+        {
+          "rating": "1",
+          "comment": "!!!!!!@@@",
+          "author": "QQQQ",
+          "date": "2016-02-19T16:58:00.455Z"
+        },
+        {
+          "rating": "2",
+          "comment": "@@@@@@\nwrqweqw",
+          "author": "WWWW",
+          "date": "2016-02-19T16:59:17.493Z"
+        },
+        {
+          "rating": "5",
+          "comment": "Five Stars",
+          "author": "5555555",
+          "date": "2016-02-19T17:01:21.629Z"
         }
       ]
     },
@@ -47,7 +71,7 @@
       "image": "images/zucchipakoda.png",
       "category": "appetizer",
       "label": "",
-      "price": "1.99",
+      "price": 1.99,
       "description": "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce",
       "comments": [
         {
@@ -79,6 +103,12 @@
           "comment": "It's your birthday, we're gonna party!",
           "author": "25 Cent",
           "date": "2011-12-02T17:57:28.556094Z"
+        },
+        {
+          "rating": "4",
+          "comment": "Comment!!!!!!!!",
+          "author": "Test!!!!!!!",
+          "date": "2016-02-19T17:03:21.926Z"
         }
       ]
     },
