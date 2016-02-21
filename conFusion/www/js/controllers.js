@@ -248,9 +248,9 @@ angular.module('conFusion.controllers', [])
                   $scope.popover = popover;
                 });
 
-                $scope.addFavorite = function (index) {
-                    console.log("index is " + index);
-                    favoriteFactory.addToFavorites(index);
+                $scope.addFavorite = function () {
+                    console.log("index is " + dish.id);
+                    favoriteFactory.addToFavorites(dish.id);
                     $scope.popover.hide();
                 }
 
