@@ -1,7 +1,7 @@
 angular.module('conFusion.controllers', [])
 
 .controller('AppCtrl',
-            function($scope, $ionicModal, $timeout) {
+            function($scope, $ionicModal, $timeout, $localStorage) {
 
                 // With the new view caching in Ionic, Controllers are only called
                 // when they are recreated or on app start, instead of every page change.
@@ -11,7 +11,7 @@ angular.module('conFusion.controllers', [])
                 //});
 
                 // Form data for the login modal
-                $scope.loginData = {};
+                $scope.loginData = $localStorage.getObject('userinfo','{}');
 
                 // Create the login modal that we will use later
                 $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -33,6 +33,7 @@ angular.module('conFusion.controllers', [])
                 // Perform the login action when the user submits the login form
                 $scope.doLogin = function() {
                   console.log('Doing login', $scope.loginData);
+                  $localStorage.storeObject('userinfo',$scope.loginData);
 
                   // Simulate a login delay. Remove this and replace with your login
                   // code if using a login system
@@ -75,11 +76,12 @@ angular.module('conFusion.controllers', [])
 .controller('MenuController',
             [
               '$scope',
+              'dishes',
               'menuFactory',
               'favoriteFactory',
               'baseURL',
               '$ionicListDelegate',
-              function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+              function ($scope, dishes, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
 
                     $scope.baseURL = baseURL;
 
@@ -89,14 +91,16 @@ angular.module('conFusion.controllers', [])
                     $scope.showMenu = false;
                     $scope.message = "Loading ...";
 
-                    menuFactory.query(
-                        function(response) {
-                            $scope.dishes = response;
-                            $scope.showMenu = true;
-                        },
-                        function(response) {
-                            $scope.message = "Error: "+response.status + " " + response.statusText;
-                        });
+
+                    $scope.dishes = dishes;
+                    // menuFactory.query(
+                    //     function(response) {
+                    //         $scope.dishes = response;
+                    //         $scope.showMenu = true;
+                    //     },
+                    //     function(response) {
+                    //         $scope.message = "Error: "+response.status + " " + response.statusText;
+                    //     });
 
 
                     $scope.select = function(setTab) {
@@ -319,49 +323,35 @@ angular.module('conFusion.controllers', [])
 .controller('IndexController',
             [
               '$scope',
+              'dish',
+              'leader',
+              'promotion',
               'menuFactory',
               'promotionFactory',
               'corporateFactory',
               'baseURL',
-              function ($scope, menuFactory, promotionFactory, corporateFactory, baseURL) {
+              function ($scope, dish, leader, promotion, menuFactory, promotionFactory, corporateFactory, baseURL) {
 
                   $scope.baseURL = baseURL;
-                  $scope.leader = corporateFactory.get({
-                      id: 3
-                  });
+                  $scope.leader = leader;
+                  $scope.dish = dish;
+                  $scope.promotion = promotion;
 
                   $scope.showDish = false;
                   $scope.message = "Loading ...";
-
-                  $scope.dish = menuFactory.get({
-                          id: 0
-                      })
-                      .$promise.then(
-                          function (response) {
-                              $scope.dish = response;
-                              $scope.showDish = true;
-                          },
-                          function (response) {
-                              $scope.message = "Error: " + response.status + " " + response.statusText;
-                          }
-                      );
-
-                  $scope.promotion = promotionFactory.get({
-                      id: 0
-                  });
-
             }
 ])
 
 .controller('AboutController',
         [
             '$scope',
+            'leaders',
             'corporateFactory',
             'baseURL',
-            function($scope, corporateFactory, baseURL) {
+            function($scope, leaders, corporateFactory, baseURL) {
 
               $scope.baseURL = baseURL;
-              $scope.leaders = corporateFactory.query();
+              $scope.leaders = leaders;
 
             }
 ])
