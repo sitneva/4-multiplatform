@@ -63,7 +63,7 @@ angular.module('conFusion', ['ionic', 'ngCordova', 'conFusion.controllers', 'con
           controller: 'IndexController',
           resolve: {
             dish: ['menuFactory', function(menuFactory){
-                return menuFactory.get({id:0});
+                return menuFactory.get({id:1});
             }],
             leader: ['corporateFactory', function(corporateFactory){
                 return corporateFactory.get({id: 3});

@@ -1,7 +1,7 @@
 angular.module('conFusion.controllers', [])
 
 .controller('AppCtrl',
-            function($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera) {
+            function($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera, $cordovaImagePicker, $cordovaVibration) {
 
                 // With the new view caching in Ionic, Controllers are only called
                 // when they are recreated or on app start, instead of every page change.
@@ -122,6 +122,28 @@ angular.module('conFusion.controllers', [])
                       $scope.registerform.show();
 
                   };
+
+                  $scope.choosePicture = function() {
+                    var options = {
+                     maximumImagesCount: 1,
+                     width: 120,
+                     height: 120,
+                     quality: 80
+                    };
+
+                    $cordovaImagePicker.getPictures(options)
+                      .then(function (results) {
+                        for (var i = 0; i < results.length; i++) {
+                          console.log('Image URI: ' + results[i]);
+                          $scope.registration.imgSrc = results[i];
+                        }
+                      }, function(error) {
+                        // error getting photos
+                      });
+
+                     $scope.registerform.show();
+
+                 };
               });
 
         }
@@ -226,7 +248,8 @@ angular.module('conFusion.controllers', [])
             '$ionicPopup',
             '$ionicLoading',
             '$timeout',
-            function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
+            '$cordovaVibration',
+            function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout, $cordovaVibration) {
                   $scope.baseURL = baseURL;
                   $scope.shouldShowDelete = false;
 
@@ -252,6 +275,7 @@ angular.module('conFusion.controllers', [])
                          if (res) {
                              console.log('Ok to delete');
                              favoriteFactory.deleteFromFavorites(index);
+                             $cordovaVibration.vibrate(100);
                          } else {
                              console.log('Canceled delete');
                          }
@@ -315,7 +339,10 @@ angular.module('conFusion.controllers', [])
             'baseURL',
             '$ionicPopover',
             '$ionicModal',
-            function($scope, $stateParams, dish, menuFactory, favoriteFactory, baseURL, $ionicPopover, $ionicModal) {
+            '$ionicPlatform',
+            '$cordovaLocalNotification',
+            '$cordovaToast',
+            function($scope, $stateParams, dish, menuFactory, favoriteFactory, baseURL, $ionicPopover, $ionicModal, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
                 $scope.baseURL = baseURL;
                 $scope.dish = {};
                 $scope.showDish = false;
@@ -334,6 +361,27 @@ angular.module('conFusion.controllers', [])
                     console.log("index is " + dish.id);
                     favoriteFactory.addToFavorites(dish.id);
                     $scope.popover.hide();
+
+                    $ionicPlatform.ready(function () {
+                          $cordovaLocalNotification.schedule({
+                              id: 1,
+                              title: "Added Favorite",
+                              text: $scope.dish.name
+                          }).then(function () {
+                              console.log('Added Favorite '+$scope.dish.name);
+                          },
+                          function () {
+                              console.log('Failed to add Notification ');
+                          });
+
+                          $cordovaToast
+                            .show('Added Favorite '+$scope.dish.name, 'long', 'bottom')
+                            .then(function (success) {
+                                // success
+                            }, function (error) {
+                                // error
+                            });
+                  });
                 }
 
                 //Add dish comment
